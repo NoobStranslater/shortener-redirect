@@ -19,9 +19,10 @@ const getQueryStringArray = function () {
 };
 
 
-let link_class
-let title_content
+let linkClass
+let titleContent
 let href
+let mainTitleContent
 
 try {
   const salt = 'BiDFGfr5x0AibPpyButqwHN9KUOs2RLvZthndVWSmJVDmiuXEcUbnfVNSq73gt994kTOxJY'
@@ -35,8 +36,9 @@ try {
 
   const decrypted = JSON.parse(decrypt(salt, encoded))
 
-  link_class = 'shortener-redirect';
-  title_content = 'Ir a ' + decrypted.title
+  linkClass = 'shortener-redirect';
+  titleContent = 'Ir a ' + decrypted.title
+  mainTitleContent = decrypted.title
   href = decrypted.link
 } catch (e) {
   if(e.message.includes('JSON')) {
@@ -45,14 +47,17 @@ try {
     console.log('Encoded doesn\'t exist')
   }
 
-  link_class = 'blogger-redirect'
-  title_content = 'Ir de regreso a NoobStraducciones'
+  linkClass = 'blogger-redirect'
+  titleContent = 'Ir de regreso a NoobStraducciones'
   href = 'https://noobstraducciones.blogspot.com/'
+  mainTitleContent = 'Shortener Redirect'
 }
 
 const title = document.getElementById('title')
 const link = document.getElementById('link')
+const mainTitle = document.getElementById('main-title')
 
-link.classList.add(link_class)
+mainTitle.appendChild(document.createTextNode(mainTitleContent))
+link.classList.add(linkClass)
 link.setAttribute('href', href)
-title.innerHTML = '<strong>' + title_content + '</strong>'
+title.innerHTML = '<strong>' + titleContent + '</strong>'
